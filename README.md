@@ -8,6 +8,8 @@ Analyze the relationship between trader performance and market sentiment to unco
 - Bitcoin Fear & Greed Index
 
 ## Approach
+
+- Data Assessing
 - Data preprocessing and sentiment alignment
 - Feature engineering for performance and risk metrics
 - Sentiment-wise analysis of trader behavior
