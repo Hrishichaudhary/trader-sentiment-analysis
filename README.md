@@ -1,7 +1,7 @@
 # Trader Performance vs Market Sentiment Analysis
 
 ## Overview
-This project analyzes how Bitcoin market sentiment (Fear vs Greed) influences trader behavior and performance using historical Hyperliquid trading data and sentiment data.
+This project analyzes how Bitcoin market sentiment influences trader behavior, performance, and risk-taking patterns using historical Hyperliquid trading data and Bitcoin Fear–Greed sentiment data.
 
 The goal is to identify behavioral patterns and derive actionable trading insights based on sentiment regimes.
 
@@ -10,43 +10,60 @@ The goal is to identify behavioral patterns and derive actionable trading insigh
 ## Datasets Used
 
 ### 1. Bitcoin Market Sentiment Dataset
-Contains daily sentiment classification:
-- Fear  
-- Greed  
-- Extreme Fear  
-- Extreme Greed  
-- Neutral  
+This dataset contains daily Bitcoin market sentiment indicators.
 
-### 2. Historical Trader Dataset
-Contains trade-level information including:
-- Account  
-- Coin  
-- Execution price  
-- Trade size (USD)  
-- Side  
-- Timestamp  
-- Closed PnL  
-- Leverage  
+Key columns used:
+- timestamp – Unix timestamp of the sentiment record  
+- value – Sentiment index value  
+- classification – Sentiment label (Fear, Greed, Extreme Fear, Extreme Greed, Neutral)  
+- date – Calendar date used for alignment with trades  
+
+The **classification** column was primarily used to analyze trader behavior under different sentiment regimes.
+
+---
+
+### 2. Historical Trader Dataset (Hyperliquid)
+This dataset contains trade-level records of traders.
+
+Key columns used:
+- Account – Unique trader identifier  
+- Coin – Asset traded  
+- Execution Price – Price at which the trade was executed  
+- Size Tokens – Quantity traded in tokens  
+- Size USD – Trade size used as a proxy for risk exposure  
+- Side – Buy/Sell direction  
+- Timestamp IST – Trade timestamp  
+- Direction – Position action  
+- Closed PnL – Profit or loss realized on the trade  
+- Fee – Transaction fee  
+- Trade ID – Unique trade identifier  
+
+These features were used to evaluate trader performance, trading behavior, and risk exposure across sentiment regimes.
 
 ---
 
 ## Methodology
 
 ### 1. Data Cleaning and Preparation
-- Removed duplicates and missing values  
-- Converted timestamps  
-- Aligned trades with daily sentiment data  
+- Checked dataset structure, missing values, and duplicates  
+- Converted timestamps to proper datetime format and extracted date for alignment  
+- Merged trader data with daily sentiment data  
+- Excluded trades without matching sentiment labels to ensure consistency in sentiment-based analysis
 
 ### 2. Feature Engineering
-- Daily trader PnL  
-- Trade frequency  
-- Risk exposure (Size USD)  
-- Win rate proxy  
+The following features were derived to better analyze trader behavior and performance:
+
+- **is_profitable** – Binary flag indicating whether a trade resulted in profit, used as a proxy for win rate.
+- **abs_pnl** – Absolute value of Closed PnL used to analyze loss severity and outcome magnitude.
+- **risk_exposure_usd** – Trade size in USD used as a proxy for capital at risk.
+- Trader-level aggregations were computed to analyze behavior patterns beyond individual trades.  
 
 ### 3. Analysis
-- Performance comparison across sentiment regimes  
-- Trader behavior analysis  
-- Trader segmentation  
+- Performance comparison across sentiment regimes (Average PnL, Win Rate)
+- Loss severity and trade outcome distribution analysis
+- Risk-taking behavior analysis using trade size
+- Trade activity comparison across sentiment regimes
+- Trader segmentation and behavior comparison (profitable vs losing traders)  
 
 ---
 
@@ -60,30 +77,13 @@ Contains trade-level information including:
 
 ## Strategy Recommendations
 
-### 1. Sentiment-aware leverage control
-Reduce leverage or position size during highly volatile or greedy market phases.
+### 1. Sentiment-aware risk management
+Reducing position size or risk exposure during highly volatile or overly optimistic market conditions can help reduce losses.
 
 ### 2. Trader segmentation-based allocation
-Allocate more capital to consistent performers rather than highly reactive traders.
+Allocating capital toward consistent performers rather than highly reactive traders can improve long-term performance.
 
 ---
-
-## How to Run
-
-1. Clone the repository  
-2. Install dependencies:
-
-```bash
-pip install pandas numpy matplotlib seaborn
-```
-3. Open the notebook and run all cells.
-
-# Tools Used
-* Python
-* Pandas
-* NumPy
-* Matplotlib
-* Seaborn
 
 ## Methodology Summary
 
@@ -104,6 +104,23 @@ Trade frequency and capital deployment vary across sentiment regimes, indicating
 Trader segmentation revealed that consistent traders maintain stable performance across different sentiment conditions.
 
 ---
+
+## How to Run
+
+1. Clone the repository  
+2. Install dependencies:
+
+```bash
+pip install pandas numpy matplotlib seaborn
+```
+3. Open the notebook and run all cells.
+
+# Tools Used
+* Python
+* Pandas
+* NumPy
+* Matplotlib
+* Seaborn
 
 ## Strategy Recommendations
 
